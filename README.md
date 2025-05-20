@@ -94,9 +94,9 @@ Content-Type: application/json
 }
 ```
 
-**PUT /reviews/:id** – Update your own review
+**PUT /books/reviews/:id** – Update your own review
 ```http
-PUT /reviews/:id
+PUT books/reviews/:id
 Authorization: Bearer your_token_here
 Content-Type: application/json
 
@@ -106,7 +106,7 @@ Content-Type: application/json
 }
 ```
 
-**DELETE /reviews/:id** – Delete your own review
+**DELETE /books/reviews/:id** – Delete your own review
 ```http
 DELETE /reviews/:id
 Authorization: Bearer your_token_here

@@ -1,6 +1,32 @@
 
 # Database Schema Design
 
+## ER Diagram
+```
++---------------+          +----------------+
+|     User      |          |     Book      |
++---------------+          +----------------+
+| _id           |          | _id           |
+| username      |          | title         |
+| password      |          | author        |
+| createdAt     |          | genre         |
+| updatedAt     |          | createdAt     |
+|               |          | updatedAt     |
++---------------+          +----------------+
+        |                         |
+        |                         |
+        |                  +----------------+
+        +----------------->|    Review      |
+                          +----------------+
+                          | _id            | 
+                          | user (ref)     |
+                          | rating         |
+                          | comment        |
+                          | createdAt      |
+                          +----------------+
+```
+
+
 ## User Schema
 ```javascript
 {
