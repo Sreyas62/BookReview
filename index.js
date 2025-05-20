@@ -60,11 +60,13 @@ app.post('/login', async (req, res) => {
 app.post('/books', auth, async (req, res) => {
   try {
     const book = new Book(req.body);
-    console.log('Book:', book)
-    await book.save();
-    res.status(201).json(book);
+    console.log('Creating book:', req.body);
+    const savedBook = await book.save();
+    console.log('Saved book:', savedBook);
+    res.status(201).json(savedBook);
   } catch (err) {
-    res.status(500).send('Server error');
+    console.error('Error saving book:', err);
+    res.status(500).json({ message: 'Server error', error: err.message });
   }
 });
 
