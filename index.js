@@ -119,7 +119,7 @@ app.post('/books/:id/reviews', auth, async (req, res) => {
     if (!book) {
       return res.status(404).json({ message: 'Book not found' });
     }
-
+  
     const hasReviewed = book.reviews.some(review => review.user.toString() === req.user.id);
     if (hasReviewed) {
       return res.status(400).json({ message: 'You have already reviewed this book' });
@@ -161,7 +161,7 @@ app.delete('/reviews/:id', auth, async (req, res) => {
     if (!book) {
       return res.status(404).json({ message: 'Review not found' });
     }
-
+  console.log('Book:', book);
     const review = book.reviews.id(req.params.id);
     if (review.user.toString() !== req.user.id) {
       return res.status(401).json({ message: 'Not authorized' });
