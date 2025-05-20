@@ -161,17 +161,22 @@ app.delete('/reviews/:id', auth, async (req, res) => {
     if (!book) {
       return res.status(404).json({ message: 'Review not found' });
     }
-  console.log('Book:', book);
+    
     const review = book.reviews.id(req.params.id);
+    if (!review) {
+      return res.status(404).json({ message: 'Review not found' });
+    }
+    
     if (review.user.toString() !== req.user.id) {
       return res.status(401).json({ message: 'Not authorized' });
     }
 
-    review.remove();
+    book.reviews = book.reviews.filter(r => r._id.toString() !== req.params.id);
     await book.save();
     res.json({ message: 'Review removed' });
   } catch (err) {
-    res.status(500).send('Server error');
+    console.error('Error deleting review:', err);
+    res.status(500).json({ message: 'Server error', error: err.message });
   }
 });
 
