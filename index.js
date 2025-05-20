@@ -35,6 +35,12 @@ app.post('/signup', async (req, res) => {
   }
 });
 
+const removeVersion = (doc) => {
+  const obj = doc.toObject();
+  delete obj.__v;
+  return obj;
+};
+
 app.post('/login', async (req, res) => {
   try {
     const { username, password } = req.body;
@@ -63,7 +69,7 @@ app.post('/books', auth, async (req, res) => {
     console.log('Creating book:', req.body);
     const savedBook = await book.save();
     console.log('Saved book:', savedBook);
-    res.status(201).json(savedBook);
+    res.status(201).json(removeVersion(savedBook));
   } catch (err) {
     console.error('Error saving book:', err);
     res.status(500).json({ message: 'Server error', error: err.message });
@@ -80,7 +86,7 @@ app.get('/books', async (req, res) => {
     const books = await Book.find(query)
       .limit(limit * 1)
       .skip((page - 1) * limit);
-    res.json(books);
+    res.json(books.map(book => removeVersion(book)));
   } catch (err) {
     res.status(500).send('Server error');
   }
@@ -131,7 +137,7 @@ app.post('/books/:id/reviews', auth, async (req, res) => {
     const review = { user: req.user.id, ...req.body };
     book.reviews.push(review);
     await book.save();
-    res.json(book);
+    res.json(removeVersion(book));
   } catch (err) {
     res.status(500).send('Server error');
   }
@@ -192,7 +198,7 @@ app.get('/search', async (req, res) => {
         { author: new RegExp(q, 'i') }
       ]
     });
-    res.json(books);
+    res.json(books.map(book => removeVersion(book)));
   } catch (err) {
     res.status(500).send('Server error');
   }
