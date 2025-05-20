@@ -5,7 +5,6 @@ const bookController = require('../controllers/bookController');
 const auth = require('../middleware/auth');
 
 router.post('/', auth, bookController.createBook);
-router.get('/search', bookController.searchBooks);
 router.get('/', bookController.getBooks);
 router.get('/:id', bookController.getBookById);
 router.post('/:id/reviews', auth, bookController.addReview);
