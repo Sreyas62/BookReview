@@ -100,8 +100,11 @@ app.get('/books/:id', async (req, res) => {
     const avgRating = book.reviews.reduce((acc, rev) => acc + rev.rating, 0) / book.reviews.length || 0;
     const paginatedReviews = book.reviews.slice(startIndex, endIndex);
     
+    const bookObj = book.toObject();
+    delete bookObj.__v;
+    
     res.json({
-      ...book.toObject(),
+      ...bookObj,
       avgRating,
       reviews: paginatedReviews,
       totalReviews: book.reviews.length,
