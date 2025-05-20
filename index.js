@@ -60,6 +60,7 @@ app.post('/login', async (req, res) => {
 app.post('/books', auth, async (req, res) => {
   try {
     const book = new Book(req.body);
+    console.log('Book:', book)
     await book.save();
     res.status(201).json(book);
   } catch (err) {
