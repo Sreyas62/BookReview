@@ -96,7 +96,7 @@ Content-Type: application/json
 
 **PUT /books/reviews/:id** – Update your own review
 ```http
-PUT books/reviews/:id
+PUT /books/reviews/:id
 Authorization: Bearer your_token_here
 Content-Type: application/json
 
