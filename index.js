@@ -88,12 +88,26 @@ app.get('/books', async (req, res) => {
 
 app.get('/books/:id', async (req, res) => {
   try {
+    const { page = 1, limit = 10 } = req.query;
     const book = await Book.findById(req.params.id);
     if (!book) {
       return res.status(404).json({ message: 'Book not found' });
     }
+
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+    
     const avgRating = book.reviews.reduce((acc, rev) => acc + rev.rating, 0) / book.reviews.length || 0;
-    res.json({ ...book.toObject(), avgRating });
+    const paginatedReviews = book.reviews.slice(startIndex, endIndex);
+    
+    res.json({
+      ...book.toObject(),
+      avgRating,
+      reviews: paginatedReviews,
+      totalReviews: book.reviews.length,
+      currentPage: page,
+      totalPages: Math.ceil(book.reviews.length / limit)
+    });
   } catch (err) {
     res.status(500).send('Server error');
   }
